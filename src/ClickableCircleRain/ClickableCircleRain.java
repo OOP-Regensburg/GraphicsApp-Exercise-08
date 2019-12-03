@@ -27,8 +27,6 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
     private Circle[] circles;
     private float[] circleSpeeds;
 
-    private int counter = 0;
-
     /**
      * Die initialize-Methode wird einmalig zum Start des Programms
      * aufgerufen.
