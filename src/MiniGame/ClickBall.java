@@ -10,9 +10,9 @@ import java.util.Random;
 public class ClickBall {
     private static final int MIN_DIAMETER = 50;
     private static final int MAX_DIAMETER = 100;
-    private static final float SPEED_INCREASE = 1.1f;
 
     private static final Random rand = new Random();
+
     private Circle ball;
     private float dx;
     private float dy;
@@ -57,26 +57,6 @@ public class ClickBall {
 
     public void draw() {
         ball.draw();
-    }
-
-    public void stop() {
-        dx = 0;
-        dy = 0;
-    }
-
-    public void changeDirection() {
-        if (dx == 0 && dy == 0) {
-            dx = SPEED_INCREASE;
-            dy = SPEED_INCREASE;
-        } else {
-            float tempDx = dx;
-            dx = dy * SPEED_INCREASE;
-            dy = tempDx * SPEED_INCREASE;
-        }
-    }
-
-    public boolean hitTest(float x, float y) {
-        return ball.hitTest(x, y);
     }
 
     /**
