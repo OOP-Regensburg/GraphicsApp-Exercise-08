@@ -4,7 +4,7 @@ import de.ur.mi.oop.app.GraphicsApp;
 import de.ur.mi.oop.colors.Color;
 import de.ur.mi.oop.colors.Colors;
 import de.ur.mi.oop.events.GraphicsAppMouseListener;
-import de.ur.mi.oop.events.MouseClickedEvent;
+import de.ur.mi.oop.events.MousePressedEvent;
 import de.ur.mi.oop.graphics.Circle;
 
 import java.util.Random;
@@ -29,7 +29,7 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
 
     private int counter = 0;
 
-    /*
+    /**
      * Die initialize-Methode wird einmalig zum Start des Programms
      * aufgerufen.
      */
@@ -40,7 +40,7 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
         setupCirclesAndSpeeds();
     }
 
-    /*
+    /**
      * Die draw-Methode wird so lange wiederholt aufgerufen, bis das Programm
      * beendet wird.
      */
@@ -51,7 +51,31 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
         drawCircles();
     }
 
-    /*
+    /**
+     * Die onMousePressed-Methode wird vom System jedes Mal aufgerufen, wenn
+     * eine Maustaste gedrückt wurde.
+     *
+     * @param   mouseEvent   Im mouseEvent sind Zeit, Position und Taste des Drucks gespeichert.
+     */
+    @Override
+    public void onMousePressed(MousePressedEvent mouseEvent) {
+        for (int i = 0; i < CIRCLE_COUNT; i++) {
+            if (circles[i].hitTest(mouseEvent.getXPos(), mouseEvent.getYPos())) {
+                circles[i].setColor(Colors.RED);
+            }
+
+            if (checkCircleColors()) {
+                setupCirclesAndSpeeds();
+            }
+        }
+    }
+
+    private void setupCanvas() {
+        setCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
+        setFrameRate(FRAME_RATE);
+    }
+
+    /**
      * In dieser Methode wird die Position aller Kreise aktualisiert
      * und die Kreise werden gezeichnet.
      */
@@ -62,7 +86,7 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
         }
     }
 
-    /*
+    /**
      * Bei der Kreisaktualisierung wird überprüft, ob der Kreis am unteren Rand
      * anstößt. Wenn dies der Fall ist, wird er wieder auf seine Startposition gesetzt.
      */
@@ -73,7 +97,7 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
         }
     }
 
-    /*
+    /**
      * In dieser Methode werden beide Arrays instanziiert und mit Objekten gefüllt.
      * Die Geschwindigkeit wird zufällig festgelegt.
      */
@@ -87,17 +111,16 @@ public class ClickableCircleRain extends GraphicsApp implements GraphicsAppMouse
         }
     }
 
-    private void setupCanvas() {
-        setCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
-        setFrameRate(FRAME_RATE);
-    }
-
-    public void onMouseClicked(MouseClickedEvent mouseEvent) {
-        System.out.println("click");
+    /**
+     * Die checkCircleColors()-Methode liefert true zurück,
+     * wenn alle Kreise rot eingefärbt wurden. Andernfalls gibt sie false zurück.
+     */
+    private boolean checkCircleColors() {
         for (int i = 0; i < CIRCLE_COUNT; i++) {
-            if (circles[i].hitTest(mouseEvent.xPos, mouseEvent.yPos)) {
-                circles[i].setColor(Colors.RED);
+            if (circles[i].getColor() != Colors.RED) {
+                return false;
             }
         }
+        return true;
     }
 }
